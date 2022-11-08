@@ -1,0 +1,2 @@
+easyocr==1.6.2
+pypinyin==0.47.1
