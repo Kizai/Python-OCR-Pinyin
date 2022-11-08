@@ -20,9 +20,12 @@ logging.basicConfig(filename=log_path, filemode='a', level=logging.INFO,
 
 # 获取OCR的识别结果
 def get_ocr_results(picture_path: str):
-    reader = easyocr.Reader(['ch_sim', 'en'])  # this needs to run only once to load the model into memory
-    result = reader.readtext(picture_path)
-    return result
+    reader = easyocr.Reader(['ch_sim', 'en'], gpu=True)  # this needs to run only once to load the model into memory
+    result_info = reader.readtext(picture_path)
+    words = []
+    for info in result_info:
+        words.append(info[1])
+    return words
 
 
 # 把识别得到的文字转换成拼音
@@ -35,8 +38,11 @@ def convert_pinyin(content: str):
 
 
 if __name__ == '__main__':
-    pic = "png/chinese.png"
-    res = get_ocr_results(pic)
-    # print(res)
-    print(convert_pinyin(res), res)
-    print(convert_pinyin("人民就是江山，江山就是人民，中国共产党打江山！"))
+    pic = {0: "png/chinese.png", 1: "png/shijing.png"}
+    for i in range(0, len(pic)):
+        ocr_res = get_ocr_results(pic[i])
+        for word in ocr_res:
+            word_pinyin = convert_pinyin(word)
+            res_info = str(word_pinyin).replace("'", "").replace(",", "").replace('[', '').replace(']', '')
+            print("{}\n{}".format(res_info, word))
+            logging.info("{}\n{}".format(res_info, word))
