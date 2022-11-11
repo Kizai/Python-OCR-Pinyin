@@ -26,9 +26,9 @@ def get_max_len_num(file_path: str):
         print("file is not found!")
 
 
-max_line = get_max_len_num("22.js")
+max_line = get_max_len_num("target.txt")
 news_wrap = []  # 准备一个数组来装结果集
-file = open("22.js", 'r', errors='ignore')
+file = open("target.txt", 'r', errors='ignore')
 news_content = file.readlines()
 for line in news_content:  # 循环遍历数组中的每行文字，line是临时变量，指代当前所循环到的文字
     if len(line) < 4:  # 左边有四个空格， len(line)表示计算该行的字数，小于4个字的就舍弃
@@ -61,5 +61,4 @@ for line in news_wrap:
 
 img.show()  # 弹框展示图片
 img.save('qianduan.png')  # 保存成文件
-# print(get_max_len_num('22.js'))
 
